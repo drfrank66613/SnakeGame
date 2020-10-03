@@ -31,6 +31,27 @@ namespace SnakeGame
             // whether to keep trails
             bool trail = false;
 
+            // The obstacle in the game
+            string obstacle = "||";
+
+            // Generating random number for the amount of obstacles (create a number between 1 and 3)
+            Random rnd = new Random();
+            int numOfObstacles = rnd.Next(1, 4);
+
+            // 2D Array to stores the x and y position of the obstacles
+            int[,] obstaclePositions = new int[3, 2];
+
+
+            // Generating the obstacles with random positions 
+            for (int i = 0; i < numOfObstacles; i++)
+            {
+                obstaclePositions[i, 0] = rnd.Next(5, 110);
+                obstaclePositions[i, 1] = rnd.Next(5, 30);
+
+                Console.SetCursorPosition(obstaclePositions[i, 0], obstaclePositions[i, 1]);
+                Console.Write(obstacle);
+            }
+
             do // until escape
             {
                 // print directions at top, then restore position
