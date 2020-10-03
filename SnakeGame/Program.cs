@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace SnakeGame
 {
@@ -33,10 +34,18 @@ namespace SnakeGame
 
             // The obstacle in the game
             string obstacle = "||";
+            string food = "F";
 
+            
             // Generating random number for the amount of obstacles (create a number between 1 and 3)
             Random rnd = new Random();
             int numOfObstacles = rnd.Next(1, 4);
+
+            //Generates food on random location
+            int foodX = rnd.Next(5, 115);
+            int foodY = rnd.Next(5, 29);
+            Console.SetCursorPosition(foodX, foodY);
+            Console.Write(food);
 
             // 2D Array to stores the x and y position of the obstacles
             int[,] obstaclePositions = new int[3, 2];
@@ -52,6 +61,7 @@ namespace SnakeGame
                 Console.Write(obstacle);
             }
 
+  
             do // until escape
             {
                 // print directions at top, then restore position
