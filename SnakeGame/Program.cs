@@ -18,8 +18,8 @@ namespace SnakeGame
             // location info & display
             int x = 0, y = 2; // y is 2 to allow the top row for directions & space
             int dx = 1, dy = 0;
-            int consoleWidthLimit = 79;
-            int consoleHeightLimit = 24;
+            int consoleWidthLimit = Console.WindowWidth;
+            int consoleHeightLimit = Console.WindowHeight;
 
             // clear to color
             Console.BackgroundColor = ConsoleColor.DarkGray;
@@ -84,16 +84,17 @@ namespace SnakeGame
                 // calculate the new position
                 // note x set to 0 because we use the whole width, but y set to 1 because we use top row for instructions
                 x += dx;
-                if (x > consoleWidthLimit)
+                if (x >= consoleWidthLimit)
                     x = 0;
                 if (x < 0)
-                    x = consoleWidthLimit;
+                    x = consoleWidthLimit - 1;
 
                 y += dy;
-                if (y > consoleHeightLimit)
+                if (y >= consoleHeightLimit)
                     y = 2; // 2 due to top spaces used for directions
                 if (y < 2)
                     y = consoleHeightLimit;
+
 
                 // write the character in the new position
                 Console.SetCursorPosition(x, y);
