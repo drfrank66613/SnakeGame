@@ -36,16 +36,11 @@ namespace SnakeGame
             string obstacle = "||";
             string food = "F";
 
-            
+
             // Generating random number for the amount of obstacles (create a number between 1 and 3)
             Random rnd = new Random();
             int numOfObstacles = rnd.Next(1, 4);
 
-            //Generates food on random location
-            int foodX = rnd.Next(5, 115);
-            int foodY = rnd.Next(5, 29);
-            Console.SetCursorPosition(foodX, foodY);
-            Console.Write(food);
 
             // 2D Array to stores the x and y position of the obstacles
             int[,] obstaclePositions = new int[3, 2];
@@ -61,7 +56,21 @@ namespace SnakeGame
                 Console.Write(obstacle);
             }
 
-  
+            //Generates food on random location
+            int foodX = rnd.Next(5, 115);
+            int foodY = rnd.Next(5, 29);
+
+            Console.SetCursorPosition(foodX, foodY);
+            
+
+            if (foodX == obstaclePositions[0, 0] && foodY == obstaclePositions[0, 1] || foodX == obstaclePositions[1, 0] && foodY == obstaclePositions[1, 1] || foodX == obstaclePositions[2, 0] && foodY == obstaclePositions[2, 1])
+            {
+                foodX = rnd.Next(5, 115);
+                foodY = rnd.Next(5, 115);
+                Console.SetCursorPosition(foodX, foodY);
+            }
+            Console.Write(food);
+
             do // until escape
             {
                 // print directions at top, then restore position
