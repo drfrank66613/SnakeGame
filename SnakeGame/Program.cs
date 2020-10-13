@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+
 using System.Linq;
+using System.Reflection.PortableExecutable;
 
 namespace SnakeGame
 {
@@ -13,6 +16,8 @@ namespace SnakeGame
 
             // display this char on the console during the game
             char ch = '*';
+
+            int snekLength = 3; //Initial Snake Length
             bool gameLive = true;
             ConsoleKeyInfo consoleKey; // holds whatever key is pressed
 
@@ -66,7 +71,7 @@ namespace SnakeGame
 
             Console.SetCursorPosition(foodX, foodY);
             
-
+            //Checks if food location overlaps with obstacle
             if (foodX == obstaclePositions[0, 0] && foodY == obstaclePositions[0, 1] || foodX == obstaclePositions[1, 0] && foodY == obstaclePositions[1, 1] || foodX == obstaclePositions[2, 0] && foodY == obstaclePositions[2, 1])
             {
                 foodX = rnd.Next(5/2, 115/2)*2;
@@ -127,7 +132,11 @@ namespace SnakeGame
                 Console.SetCursorPosition(x, y);
                 if (trail == false)
                 {
-                    Console.Write(' ');
+                    for (int i = 0; i < snekLength; i++)    //Removes trail for each increased snake length
+                    {
+                        Console.Write(' ');
+                    }
+
                     if (x == obstaclePositions[0, 0] && y == obstaclePositions[0, 1] || x == obstaclePositions[1, 0] && y == obstaclePositions[1, 1] || x == obstaclePositions[2, 0] && y == obstaclePositions[2, 1])
                     {
                         Console.Write("  ");
@@ -152,12 +161,20 @@ namespace SnakeGame
                 
                 // write the character in the new position
                 Console.SetCursorPosition(x, y);
-                Console.Write(ch);
+
+                for (int i = 0; i < snekLength; i++)
+                {
+                    Console.Write(ch);
+                }
+                
+                
+
 
                 // Increase the current score and spawn a new food location if the previous food has been eaten
                 if (x == foodX && y == foodY)
                 {
                     currentScore += 10;
+                    snekLength += 1; //Increment Snake Length after eating food by 1
 
                     foodX = rnd.Next(5 / 2, 115 / 2) * 2;
                     foodY = rnd.Next(5 / 2, 29 / 2) * 2;
