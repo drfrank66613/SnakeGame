@@ -86,7 +86,8 @@ namespace SnakeGame
             Console.Write(food);
 
 
-            
+            // The direction of the snake movement
+            string direction = "";
             do // until escape
             {
                 // print directions at top, then restore position
@@ -99,6 +100,40 @@ namespace SnakeGame
                 Console.SetCursorPosition(x, y);
                 Console.ForegroundColor = cc;
 
+                // find the current position in the console grid & erase the character there if don't want to see the trail
+                //Console.SetCursorPosition(x, y);
+                if (trail == false)
+                {
+                    for (int i = 0; i < snekLength; i++)    //Removes trail for each increased snake length
+                    {
+                        // Remove every snake body trail according to the snake direction 
+                        if (direction == "up")
+                        {
+                            Console.SetCursorPosition(x, y + i);
+                        }
+                        else if (direction == "right")
+                        {
+                            Console.SetCursorPosition(x - i, y);
+                        }
+                        else if (direction == "down")
+                        {
+                            Console.SetCursorPosition(x, y - i);
+                        }
+                        else if (direction == "left")
+                        {
+                            Console.SetCursorPosition(x + i, y);
+                        }
+                        Console.Write(' ');
+                    }
+
+                    if (x == obstaclePositions[0, 0] && y == obstaclePositions[0, 1]
+                        || x == obstaclePositions[1, 0] && y == obstaclePositions[1, 1]
+                        || x == obstaclePositions[2, 0] && y == obstaclePositions[2, 1])
+                    {
+                        Console.Write("  ");
+                    }
+                }
+
                 // see if a key has been pressed
                 if (Console.KeyAvailable)
                 {
@@ -109,22 +144,26 @@ namespace SnakeGame
                         case ConsoleKey.UpArrow: //UP
                             dx = 0;
                             dy = -1;
-                            Console.ForegroundColor = ConsoleColor.Red;                            
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            direction = "up";
                             break;
                         case ConsoleKey.DownArrow: // DOWN
                             dx = 0;
                             dy = 1;
-                            Console.ForegroundColor = ConsoleColor.Cyan;                          
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            direction = "down";
                             break;
                         case ConsoleKey.LeftArrow: //LEFT
                             dx = -2; // Changed to -2 so that the snake movement speed looks similar when moving vertically and horizontally
                             dy = 0;
-                            Console.ForegroundColor = ConsoleColor.Green;                            
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            direction = "left";
                             break;
                         case ConsoleKey.RightArrow: //RIGHT
                             dx = 2; // Changed to 2 so that the snake movement speed looks similar when moving vertically and horizontally
                             dy = 0;
-                            Console.ForegroundColor = ConsoleColor.Black;       
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            direction = "right";
                             break;
                         case ConsoleKey.Escape: //END
                             gameLive = false;
@@ -132,45 +171,48 @@ namespace SnakeGame
                     }
                 }
 
-                // find the current position in the console grid & erase the character there if don't want to see the trail
-                Console.SetCursorPosition(x, y);
-                if (trail == false)
-                {
-                    for (int i = 0; i < snekLength; i++)    //Removes trail for each increased snake length
-                    {
-                        Console.Write(' ');
-                    }
-
-                    if (x == obstaclePositions[0, 0] && y == obstaclePositions[0, 1] 
-                        || x == obstaclePositions[1, 0] && y == obstaclePositions[1, 1] 
-                        || x == obstaclePositions[2, 0] && y == obstaclePositions[2, 1])
-                    {
-                        Console.Write("  ");
-                    }
-                }
+                
                     
 
                 // calculate the new position
                 // note x set to 0 because we use the whole width, but y set to 1 because we use top row for instructions
                 x += dx;
                 if (x >= consoleWidthLimit)
-                    x = 0;
+                    x = snekLength;
                 if (x < 0)
-                    x = consoleWidthLimit - 1;
+                    x = consoleWidthLimit - snekLength;
 
                 y += dy;
                 if (y >= consoleHeightLimit)
-                    y = 2; // 2 due to top spaces used for directions
+                    y = 2 + snekLength; // 2 due to top spaces used for directions
                 if (y < 2)
                     y = consoleHeightLimit;
 
 
                 // write the character in the new position
-                Console.SetCursorPosition(x, y);
+                // Console.SetCursorPosition(x, y);
 
                 for (int i = 0; i < snekLength; i++)
                 {
+                    // Printing the snake body according to the direction of the snake movement
+                    if (direction == "up")
+                    {
+                        Console.SetCursorPosition(x, y + i);
+                    }
+                    else if (direction == "right")
+                    {
+                        Console.SetCursorPosition(x - i, y);
+                    }
+                    else if (direction == "down")
+                    {
+                        Console.SetCursorPosition(x, y - i);
+                    }
+                    else if (direction == "left")
+                    {
+                        Console.SetCursorPosition(x + i, y);
+                    }
                     Console.Write(ch);
+
                 }
                 
                 
