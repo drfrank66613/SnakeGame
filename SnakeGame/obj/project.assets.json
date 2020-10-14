@@ -8,19 +8,19 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\ASUS\\.nuget\\packages\\": {}
+    "C:\\Users\\User\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\SWINBURNE UNIVERSITY OF TECHNOLOGY SARAWAK\\Year 2 Sem 1\\SWE20001 - DEVELOPMENT PROJECT 1 TOOLS AND PRACTICES\\Week 4 - 7\\Week 5\\SnakeGame\\SnakeGame\\SnakeGame.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Documents\\Git Code\\SnakeGame\\SnakeGame\\SnakeGame.csproj",
       "projectName": "SnakeGame",
-      "projectPath": "D:\\SWINBURNE UNIVERSITY OF TECHNOLOGY SARAWAK\\Year 2 Sem 1\\SWE20001 - DEVELOPMENT PROJECT 1 TOOLS AND PRACTICES\\Week 4 - 7\\Week 5\\SnakeGame\\SnakeGame\\SnakeGame.csproj",
-      "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-      "outputPath": "D:\\SWINBURNE UNIVERSITY OF TECHNOLOGY SARAWAK\\Year 2 Sem 1\\SWE20001 - DEVELOPMENT PROJECT 1 TOOLS AND PRACTICES\\Week 4 - 7\\Week 5\\SnakeGame\\SnakeGame\\obj\\",
+      "projectPath": "C:\\Users\\User\\Documents\\Git Code\\SnakeGame\\SnakeGame\\SnakeGame.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\User\\Documents\\Git Code\\SnakeGame\\SnakeGame\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -58,7 +58,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -46,6 +46,9 @@ namespace SnakeGame
             // The current score based on the food eaten
             int currentScore = 0;
 
+            int timeLimitShown = 10; // To store the time limit of the food shown on the Console
+            int timeLimitCounter = 5; // To store the limit counter of the time limit shown on the Console
+
             
             // Generating random number for the amount of obstacles (create a number between 1 and 3)
             Random rnd = new Random();
@@ -97,6 +100,16 @@ namespace SnakeGame
                 Console.SetCursorPosition(0, 0);
                 Console.Write("Arrows move up/down/right/left. Press 'esc' quit.");
                 Console.WriteLine("                                     Score : " + currentScore);
+                if(timeLimitShown < 10)
+                {
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, 1);
+                    Console.WriteLine("Food Time Limit: " + timeLimitShown.ToString().Trim());
+                }
+                else
+                {
+                    Console.WriteLine("Food Time Limit: " + timeLimitShown);
+                }
                 Console.SetCursorPosition(x, y);
                 Console.ForegroundColor = cc;
 
@@ -214,16 +227,51 @@ namespace SnakeGame
                     Console.Write(ch);
 
                 }
-                
-                
-                
 
+                // The limit counter is decreased by 1 every loop
+                timeLimitCounter -= 1;
+                
+                // Decrease the time limit shown value on the Console by 1 and return back timeLimitCounter value to 5 if timeLimitCounter value is 0
+                if(timeLimitCounter == 0)
+                {
+                    timeLimitShown -= 1;
+                    timeLimitCounter = 5;
+                }
+
+                // Change the food location if timeLimitShown is less than 0 and return timeLimitShown & timeLimitCounter value back to initial value
+                if (timeLimitShown < 0)
+                {
+                    timeLimitShown = 10;
+                    timeLimitCounter = 5;
+
+                    Console.SetCursorPosition(foodX, foodY);
+                    Console.Write(' ');
+
+                    foodX = rnd.Next(5 / 2, 115 / 2) * 2;
+                    foodY = rnd.Next(5 / 2, 29 / 2) * 2;
+
+                    Console.SetCursorPosition(foodX, foodY);
+
+
+                    if (foodX == obstaclePositions[0, 0] && foodY == obstaclePositions[0, 1]
+                        || foodX == obstaclePositions[1, 0] && foodY == obstaclePositions[1, 1]
+                        || foodX == obstaclePositions[2, 0] && foodY == obstaclePositions[2, 1])
+                    {
+                        foodX = rnd.Next(5 / 2, 115 / 2) * 2;
+                        foodY = rnd.Next(5 / 2, 115 / 2) * 2;
+                        Console.SetCursorPosition(foodX, foodY);
+                    }
+                    Console.Write(food);
+                }
 
                 // Increase the current score and spawn a new food location if the previous food has been eaten
+                // Also, return timeLimitShown & timeLimitCounter value back to initial value
                 if (x == foodX && y == foodY)
                 {
                     currentScore += 10;
                     snekLength += 1; //Increment Snake Length after eating food by 1
+                    timeLimitShown = 10;
+                    timeLimitCounter = 5;
 
                     foodX = rnd.Next(5 / 2, 115 / 2) * 2;
                     foodY = rnd.Next(5 / 2, 29 / 2) * 2;
