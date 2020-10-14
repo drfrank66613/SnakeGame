@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Documents\\GitHub\\SnakeGame\\SnakeGame\\SnakeGame.csproj": {}
+    "D:\\SWINBURNE UNIVERSITY OF TECHNOLOGY SARAWAK\\Year 2 Sem 1\\SWE20001 - DEVELOPMENT PROJECT 1 TOOLS AND PRACTICES\\Week 4 - 7\\Week 5\\SnakeGame\\SnakeGame\\SnakeGame.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Documents\\GitHub\\SnakeGame\\SnakeGame\\SnakeGame.csproj": {
+    "D:\\SWINBURNE UNIVERSITY OF TECHNOLOGY SARAWAK\\Year 2 Sem 1\\SWE20001 - DEVELOPMENT PROJECT 1 TOOLS AND PRACTICES\\Week 4 - 7\\Week 5\\SnakeGame\\SnakeGame\\SnakeGame.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Documents\\GitHub\\SnakeGame\\SnakeGame\\SnakeGame.csproj",
+        "projectUniqueName": "D:\\SWINBURNE UNIVERSITY OF TECHNOLOGY SARAWAK\\Year 2 Sem 1\\SWE20001 - DEVELOPMENT PROJECT 1 TOOLS AND PRACTICES\\Week 4 - 7\\Week 5\\SnakeGame\\SnakeGame\\SnakeGame.csproj",
         "projectName": "SnakeGame",
-        "projectPath": "C:\\Users\\User\\Documents\\GitHub\\SnakeGame\\SnakeGame\\SnakeGame.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Documents\\GitHub\\SnakeGame\\SnakeGame\\obj\\",
+        "projectPath": "D:\\SWINBURNE UNIVERSITY OF TECHNOLOGY SARAWAK\\Year 2 Sem 1\\SWE20001 - DEVELOPMENT PROJECT 1 TOOLS AND PRACTICES\\Week 4 - 7\\Week 5\\SnakeGame\\SnakeGame\\SnakeGame.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "D:\\SWINBURNE UNIVERSITY OF TECHNOLOGY SARAWAK\\Year 2 Sem 1\\SWE20001 - DEVELOPMENT PROJECT 1 TOOLS AND PRACTICES\\Week 4 - 7\\Week 5\\SnakeGame\\SnakeGame\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
