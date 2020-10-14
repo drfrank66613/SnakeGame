@@ -365,10 +365,50 @@ namespace SnakeGame
                 // If the snake hit one of the obstacles then game over or end the game
                 for (int i = 0; i < obstaclePositions.GetLength(0); i++)
                 {
-                    if (x == obstaclePositions[i, 0] && y == obstaclePositions[i, 1])
+                    // This loop for looping every part of snake body 
+                    // and comparing it with obstacles' x and y position 
+                    for (int j = 0; j < snekLength; j++)
                     {
-                        gameLive = false;
-                        break;
+                        if (direction == "up")
+                        {
+                            // Comparing every part of snake body with the obstacles' x and y position 
+                            // for going up direction
+                            if (x == obstaclePositions[i, 0] && (y + j) == obstaclePositions[i, 1])
+                            {
+                                gameLive = false;
+                                break;
+                            }
+                        }
+                        else if (direction == "right")
+                        {
+                            // Comparing every part of snake body with the obstacles' x and y position 
+                            // for going right direction
+                            if ((x - j) == obstaclePositions[i, 0] && y == obstaclePositions[i, 1])
+                            {
+                                gameLive = false;
+                                break;
+                            }
+                        }
+                        else if (direction == "down")
+                        {
+                            // Comparing every part of snake body with the obstacles' x and y position 
+                            // for going down direction
+                            if (x == obstaclePositions[i, 0] && (y - j) == obstaclePositions[i, 1])
+                            {
+                                gameLive = false;
+                                break;
+                            }
+                        }
+                        else if (direction == "left")
+                        {
+                            // Comparing every part of snake body with the obstacles' x and y position 
+                            // for going left direction
+                            if ((x + j) == obstaclePositions[i, 0] && y == obstaclePositions[i, 1])
+                            {
+                                gameLive = false;
+                                break;
+                            }
+                        }
                     }
                 }
 
