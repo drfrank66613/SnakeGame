@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using System.Linq;
 using System.Reflection.PortableExecutable;
+using System.Runtime.Versioning;
 
 namespace SnakeGame
 {
@@ -90,8 +91,8 @@ namespace SnakeGame
 
 
             // The direction of the snake movement
-            string direction = "";
-            do // until escape
+            string direction = "right"; // "right" here means the initial direction is to the right
+             do // until escape
             {
                 // print directions at top, then restore position
                 // save then restore current color
@@ -114,7 +115,6 @@ namespace SnakeGame
                 Console.ForegroundColor = cc;
 
                 // find the current position in the console grid & erase the character there if don't want to see the trail
-                //Console.SetCursorPosition(x, y);
                 if (trail == false)
                 {
                     for (int i = 0; i < snekLength; i++)    //Removes trail for each increased snake length
@@ -122,28 +122,48 @@ namespace SnakeGame
                         // Remove every snake body trail according to the snake direction 
                         if (direction == "up")
                         {
-                            Console.SetCursorPosition(x, y + i);
+                            // Checking to make sure if y + i is not more than the console height limit before clearing the trail
+                            // Hence not triggering the ArgumentOutOfRangeException
+                            if ((y + i) < consoleHeightLimit)
+                            {
+                                // clearing the snake body trail when it's going up
+                                Console.SetCursorPosition(x, y + i); 
+                                Console.Write(' ');
+                            }
                         }
                         else if (direction == "right")
                         {
-                            Console.SetCursorPosition(x - i, y);
+                            // Checking to make sure if x - i is not less than 0 before clearing the trail
+                            // Hence not triggering the ArgumentOutOfRangeException
+                            if ((x - i) > 0)
+                            {
+                                // clearing the snake body trail when it's going right
+                                Console.SetCursorPosition(x - i, y); 
+                                Console.Write(' ');
+                            }
                         }
                         else if (direction == "down")
                         {
-                            Console.SetCursorPosition(x, y - i);
+                            // Checking to make sure if y - i is not less than 0 before clearing the trail
+                            // Hence not triggering the ArgumentOutOfRangeException
+                            if ((y - i) > 0)
+                            {
+                                // clearing the snake body trail when it's going down
+                                Console.SetCursorPosition(x, y - i); 
+                                Console.Write(' ');
+                            }
                         }
                         else if (direction == "left")
                         {
-                            Console.SetCursorPosition(x + i, y);
+                            // Checking to make sure if x + i is not more than the console width limit before clearing the trail
+                            // Hence not triggering the ArgumentOutOfRangeException
+                            if ((x + i) < consoleWidthLimit)
+                            {
+                                // clearing the snake body trail when it's going left
+                                Console.SetCursorPosition(x + i, y);
+                                Console.Write(' ');
+                            }
                         }
-                        Console.Write(' ');
-                    }
-
-                    if (x == obstaclePositions[0, 0] && y == obstaclePositions[0, 1]
-                        || x == obstaclePositions[1, 0] && y == obstaclePositions[1, 1]
-                        || x == obstaclePositions[2, 0] && y == obstaclePositions[2, 1])
-                    {
-                        Console.Write("  ");
                     }
                 }
 
@@ -157,14 +177,14 @@ namespace SnakeGame
                         case ConsoleKey.UpArrow: //UP
                             dx = 0;
                             dy = -1;
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            direction = "up";
+                            Console.ForegroundColor = ConsoleColor.DarkBlue;
+                            direction = "up"; 
                             break;
                         case ConsoleKey.DownArrow: // DOWN
                             dx = 0;
                             dy = 1;
                             Console.ForegroundColor = ConsoleColor.Cyan;
-                            direction = "down";
+                            direction = "down"; 
                             break;
                         case ConsoleKey.LeftArrow: //LEFT
                             dx = -2; // Changed to -2 so that the snake movement speed looks similar when moving vertically and horizontally
@@ -188,19 +208,45 @@ namespace SnakeGame
                     
 
                 // calculate the new position
-                // note x set to 0 because we use the whole width, but y set to 1 because we use top row for instructions
+                // note x set to 0 because we use the whole width, but y set to 2 because we use top row for instructions
                 x += dx;
                 if (x >= consoleWidthLimit)
+                {
                     x = snekLength;
+                    // Since the value of dx is even value 
+                    // hence if the x is odd, we need to add by 1 so it become even value
+                    // Add by 1 because the x value start at the left side of the screen
+                    // Convert it to an even value because the food and obstacle positions are in even value
+                    if ((x % 2) == 1)
+                    {
+                        x += 1;
+                    }
+                }
+                    
+
                 if (x < 0)
+                {
                     x = consoleWidthLimit - snekLength;
+                    // Since the value of dx is even value 
+                    // hence if the x is odd, we need to subtract by 1 so it become even value
+                    // Subtract by 1 because the x value start at the right side of the screen
+                    // Convert it to an even value because the food and obstacle positions are in even value
+                    if ((x % 2) == 1)
+                    {
+                        x -= 1;
+                    }
+                }
+                    
 
                 y += dy;
                 if (y >= consoleHeightLimit)
+                {
                     y = 2 + snekLength; // 2 due to top spaces used for directions
+                }
                 if (y < 2)
+                {
                     y = consoleHeightLimit;
-
+                }
 
                 // write the character in the new position
                 // Console.SetCursorPosition(x, y);
@@ -210,22 +256,48 @@ namespace SnakeGame
                     // Printing the snake body according to the direction of the snake movement
                     if (direction == "up")
                     {
-                        Console.SetCursorPosition(x, y + i);
+                        // Checking to make sure if y + i is not more than console height limit before printing the snake's body
+                        // Hence not triggering the ArgumentOutOfRangeException
+                        if ((y + i) < consoleHeightLimit)
+                        {
+                            // Printing the snake body when it's going up
+                            Console.SetCursorPosition(x, y + i);
+                            Console.Write(ch);
+                        }
                     }
                     else if (direction == "right")
                     {
-                        Console.SetCursorPosition(x - i, y);
+                        // Checking to make sure if x - i is not less than 0 before printing the snake's body
+                        // Hence not triggering the ArgumentOutOfRangeException
+                        if ((x - i) > 0)
+                        {
+                            // Printing the snake body when it's going right
+                            Console.SetCursorPosition(x - i, y);
+                            Console.Write(ch);
+                        }
                     }
                     else if (direction == "down")
                     {
-                        Console.SetCursorPosition(x, y - i);
+                        // Checking to make sure if y - i is not less than 0 before printing the snake's body
+                        // Hence not triggering the ArgumentOutOfRangeException
+                        if ((y - i) > 0)
+                        {
+                            // Printing the snake body when it's going down
+                            Console.SetCursorPosition(x, y - i);
+                            Console.Write(ch);
+                        }
                     }
                     else if (direction == "left")
                     {
-                        Console.SetCursorPosition(x + i, y);
+                        // Checking to make sure if x + i is not more than console width limit before printing the snake's body
+                        // Hence not triggering the ArgumentOutOfRangeException
+                        if ((x + i) < consoleWidthLimit)
+                        {
+                            // Printing the snake body when it's going left
+                            Console.SetCursorPosition(x + i, y);
+                            Console.Write(ch);
+                        }
                     }
-                    Console.Write(ch);
-
                 }
 
                 // The limit counter is decreased by 1 every loop
@@ -296,8 +368,8 @@ namespace SnakeGame
                     if (x == obstaclePositions[i, 0] && y == obstaclePositions[i, 1])
                     {
                         gameLive = false;
+                        break;
                     }
-
                 }
 
 
