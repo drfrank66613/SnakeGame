@@ -1,0 +1,12 @@
+=====HELP PAGE=======
+
+HOW TO PLAY
+1. Move up   : (char)25
+2. Move down : j
+3. Move left : jk
+4. Move right: nj
+
+GAME RULES
+1. The snake has lives if it hits one of the obstacles then decrease the snake's lives by 1
+2. Every time the snake eat the food, the score will increase by 10
+3. Game over if the snake's lives are 0

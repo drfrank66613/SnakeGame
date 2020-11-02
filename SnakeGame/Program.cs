@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.IO;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.PortableExecutable;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
 namespace SnakeGame
 {
     class Program
     {
+     
         static void Main(string[] args)
         {
             // start game
@@ -47,49 +50,64 @@ namespace SnakeGame
             // The current score based on the food eaten
             int currentScore = 0;
 
+            // This variable will be used to change the value of the timeLimitCounter in the run time hence can set the difficulty level
+            int limitCounterDeterminer = 15;
+
             int timeLimitShown = 10; // To store the time limit of the food shown on the Console
-            int timeLimitCounter = 5; // To store the limit counter of the time limit shown on the Console
+            int timeLimitCounter = limitCounterDeterminer; // To store the limit counter of the time limit shown on the Console
 
             
             // Generating random number for the amount of obstacles (create a number between 1 and 3)
             Random rnd = new Random();
-            int numOfObstacles = rnd.Next(1, 4);
-
-
-            // 2D Array to stores the x and y position of the obstacles
-            int[,] obstaclePositions = new int[3, 2];
 
             
-            // Generating the obstacles with random positions 
-            for (int i = 0; i < numOfObstacles; i++)
-            {
-                // Generating random even values
-                obstaclePositions[i, 0] = rnd.Next(5/2, 110/2)*2;
-                obstaclePositions[i, 1] = rnd.Next(5/2, 30/2)*2;
 
-                Console.SetCursorPosition(obstaclePositions[i, 0], obstaclePositions[i, 1]);
-                Console.Write(obstacle);
+
+            // This is a list containing a list hence it is like a 2D dynamic List container
+            // This is for storing the x and y position of the obstacles 
+            List<List<int>> obstaclesPos = new List<List<int>>();
+
+            // This boolean value will determine whether the program should increase the difficulty level
+            bool increaseDifficult = false;
+
+            int maxObstaclesNumber = 4;
+
+            Console.ForegroundColor = ConsoleColor.White;
+
+            // Adding the first obstacle to the game
+            List<int> firstObstacle = new List<int>();
+
+            // Generating random even values
+            firstObstacle.Add(rnd.Next(5/2, (consoleWidthLimit - 10)/2)*2);
+            firstObstacle.Add(rnd.Next(5/2, (consoleHeightLimit)/2)*2);
+
+            Console.SetCursorPosition(firstObstacle[0], firstObstacle[1]);
+            Console.Write(obstacle);
+
+            // Add it to the 2D list
+            obstaclesPos.Add(firstObstacle);
                
-            }
+            
 
             //Generates food on random location
-            int foodX = rnd.Next(5/2, 115/2)*2;
-            int foodY = rnd.Next(5/2, 29/2)*2;
+            int foodX = rnd.Next(5/2, (consoleWidthLimit - 5)/2)*2;
+            int foodY = rnd.Next(5/2, (consoleHeightLimit - 1)/2)*2;
 
             Console.SetCursorPosition(foodX, foodY);
             
             //Checks if food location overlaps with obstacle
-            if (foodX == obstaclePositions[0, 0] && foodY == obstaclePositions[0, 1] 
-                || foodX == obstaclePositions[1, 0] && foodY == obstaclePositions[1, 1] 
-                || foodX == obstaclePositions[2, 0] && foodY == obstaclePositions[2, 1])
+            for (int i = 0; i < obstaclesPos.Count; i++)
             {
-                foodX = rnd.Next(5/2, 115/2)*2;
-                foodY = rnd.Next(5/2, 115/2)*2;
-                Console.SetCursorPosition(foodX, foodY);
+                if ( (foodX == obstaclesPos[i][0]) && (foodY == obstaclesPos[i][1]))
+                {
+                    foodX = rnd.Next(5 / 2, (consoleWidthLimit - 5)/ 2) * 2;
+                    foodY = rnd.Next(5 / 2, (consoleHeightLimit - 1) / 2) * 2;
+                    Console.SetCursorPosition(foodX, foodY);
+                }
             }
             Console.Write(food);
 
-
+            
             // The direction of the snake movement
             string direction = "right"; // "right" here means the initial direction is to the right
              do // until escape
@@ -112,7 +130,38 @@ namespace SnakeGame
                     Console.WriteLine("Food Time Limit: " + timeLimitShown);
                 }
                 Console.SetCursorPosition(x, y);
+
+
                 Console.ForegroundColor = cc;
+
+                // This section is for increasing the difficulty level of the game
+                // Such as increased the number of the obstacles until it reachs the max number of the obstacles
+                // Next is to shorten the food respawn time interval
+                if (increaseDifficult)
+                {
+                    // Checking whether the number of obstacles in the list is smaller than the maximum amount
+                    if (obstaclesPos.Count < maxObstaclesNumber)
+                    {
+                        // Create new obstacle
+                        List<int> newObstacle = new List<int>();
+                        newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
+                        newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
+
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
+                        Console.Write(obstacle);
+
+                        // Add it to the 2D list
+                        obstaclesPos.Add(newObstacle);
+                    }
+                    // Checking whether the determiner's value is still more than 5 thus reduce it by 1
+                    else if (limitCounterDeterminer > 5)
+                    {
+                        limitCounterDeterminer--;
+                    }
+                    
+                    increaseDifficult = false;
+                }
 
                 // find the current position in the console grid & erase the character there if don't want to see the trail
                 if (trail == false)
@@ -204,8 +253,6 @@ namespace SnakeGame
                     }
                 }
 
-                
-                    
 
                 // calculate the new position
                 // note x set to 0 because we use the whole width, but y set to 2 because we use top row for instructions
@@ -307,31 +354,31 @@ namespace SnakeGame
                 if(timeLimitCounter == 0)
                 {
                     timeLimitShown -= 1;
-                    timeLimitCounter = 5;
+                    timeLimitCounter = limitCounterDeterminer;
                 }
 
                 // Change the food location if timeLimitShown is less than 0 and return timeLimitShown & timeLimitCounter value back to initial value
                 if (timeLimitShown < 0)
                 {
                     timeLimitShown = 10;
-                    timeLimitCounter = 5;
+                    timeLimitCounter = limitCounterDeterminer;
 
                     Console.SetCursorPosition(foodX, foodY);
                     Console.Write(' ');
 
-                    foodX = rnd.Next(5 / 2, 115 / 2) * 2;
-                    foodY = rnd.Next(5 / 2, 29 / 2) * 2;
+                    foodX = rnd.Next(5 / 2, (consoleWidthLimit - 5) / 2) * 2;
+                    foodY = rnd.Next(5 / 2, (consoleHeightLimit - 1) / 2) * 2;
 
                     Console.SetCursorPosition(foodX, foodY);
 
-
-                    if (foodX == obstaclePositions[0, 0] && foodY == obstaclePositions[0, 1]
-                        || foodX == obstaclePositions[1, 0] && foodY == obstaclePositions[1, 1]
-                        || foodX == obstaclePositions[2, 0] && foodY == obstaclePositions[2, 1])
+                    for (int i = 0; i < obstaclesPos.Count; i++)
                     {
-                        foodX = rnd.Next(5 / 2, 115 / 2) * 2;
-                        foodY = rnd.Next(5 / 2, 115 / 2) * 2;
-                        Console.SetCursorPosition(foodX, foodY);
+                        if ((foodX == obstaclesPos[i][0]) && (foodY == obstaclesPos[i][1]))
+                        {
+                            foodX = rnd.Next(5 / 2, (consoleWidthLimit - 5) / 2) * 2;
+                            foodY = rnd.Next(5 / 2, (consoleHeightLimit - 1) / 2) * 2;
+                            Console.SetCursorPosition(foodX, foodY);
+                        }
                     }
                     Console.Write(food);
                 }
@@ -343,27 +390,33 @@ namespace SnakeGame
                     currentScore += 10;
                     snekLength += 1; //Increment Snake Length after eating food by 1
                     timeLimitShown = 10;
-                    timeLimitCounter = 5;
+                    timeLimitCounter = limitCounterDeterminer;
 
-                    foodX = rnd.Next(5 / 2, 115 / 2) * 2;
-                    foodY = rnd.Next(5 / 2, 29 / 2) * 2;
+                    // If the score is only able be modulo with 50 then set the increaseDifficult's variable to true 
+                    if ((currentScore % 50 == 0) && (currentScore != 0))
+                    {
+                        increaseDifficult = true;
+                    }
+
+                    foodX = rnd.Next(5 / 2, (consoleWidthLimit - 5) / 2) * 2;
+                    foodY = rnd.Next(5 / 2, (consoleHeightLimit - 1) / 2) * 2;
 
                     Console.SetCursorPosition(foodX, foodY);
 
-
-                    if (foodX == obstaclePositions[0, 0] && foodY == obstaclePositions[0, 1] 
-                        || foodX == obstaclePositions[1, 0] && foodY == obstaclePositions[1, 1] 
-                        || foodX == obstaclePositions[2, 0] && foodY == obstaclePositions[2, 1])
+                    for (int i = 0; i < obstaclesPos.Count; i++)
                     {
-                        foodX = rnd.Next(5 / 2, 115 / 2) * 2;
-                        foodY = rnd.Next(5 / 2, 115 / 2) * 2;
-                        Console.SetCursorPosition(foodX, foodY);
+                        if ((foodX == obstaclesPos[i][0]) && (foodY == obstaclesPos[i][1]))
+                        {
+                            foodX = rnd.Next(5 / 2, (consoleWidthLimit - 5) / 2) * 2;
+                            foodY = rnd.Next(5 / 2, (consoleHeightLimit - 1) / 2) * 2;
+                            Console.SetCursorPosition(foodX, foodY);
+                        }
                     }
                     Console.Write(food);
                 }
 
                 // If the snake hit one of the obstacles then game over or end the game
-                for (int i = 0; i < obstaclePositions.GetLength(0); i++)
+                for (int i = 0; i < obstaclesPos.Count; i++)
                 {
                     // This loop for looping every part of snake body 
                     // and comparing it with obstacles' x and y position 
@@ -373,7 +426,7 @@ namespace SnakeGame
                         {
                             // Comparing every part of snake body with the obstacles' x and y position 
                             // for going up direction
-                            if (x == obstaclePositions[i, 0] && (y + j) == obstaclePositions[i, 1])
+                            if (x == obstaclesPos[i][0] && (y + j) == obstaclesPos[i][1])
                             {
                                 gameLive = false;
                                 break;
@@ -383,7 +436,7 @@ namespace SnakeGame
                         {
                             // Comparing every part of snake body with the obstacles' x and y position 
                             // for going right direction
-                            if ((x - j) == obstaclePositions[i, 0] && y == obstaclePositions[i, 1])
+                            if ((x - j) == obstaclesPos[i][0] && y == obstaclesPos[i][1])
                             {
                                 gameLive = false;
                                 break;
@@ -393,7 +446,7 @@ namespace SnakeGame
                         {
                             // Comparing every part of snake body with the obstacles' x and y position 
                             // for going down direction
-                            if (x == obstaclePositions[i, 0] && (y - j) == obstaclePositions[i, 1])
+                            if (x == obstaclesPos[i][0] && (y - j) == obstaclesPos[i][1])
                             {
                                 gameLive = false;
                                 break;
@@ -403,7 +456,7 @@ namespace SnakeGame
                         {
                             // Comparing every part of snake body with the obstacles' x and y position 
                             // for going left direction
-                            if ((x + j) == obstaclePositions[i, 0] && y == obstaclePositions[i, 1])
+                            if ((x + j) == obstaclesPos[i][0] && y == obstaclesPos[i][1])
                             {
                                 gameLive = false;
                                 break;
