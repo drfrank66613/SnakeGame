@@ -11,7 +11,26 @@ namespace SnakeGame
 {
     class Program
     {
-     
+        // This method is for printing the help page
+        static void PrintHelp()
+        {
+            Console.Clear();
+            Console.WriteLine("=====HELP PAGE=======\n");
+
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
+            Console.WriteLine("HOW TO PLAY");
+            Console.WriteLine("1. Move up   \t: \u2191");
+            Console.WriteLine("2. Move right\t: \u2192");
+            Console.WriteLine("2. Move down\t: \u2193");
+            Console.WriteLine("2. Move left\t: \u2190");
+
+            Console.WriteLine("\nGAME RULES");
+            Console.WriteLine("1. The snake has lives if it hits one of the obstacles then decrease the snake's lives by 1");
+            Console.WriteLine("2. Every time the snake eat the food, the score will increase by 10");
+            Console.WriteLine("3. Game over if the snake's lives are 0");
+            Console.WriteLine("4. As the score increases, The difficulty level increased as well");
+        }
+
         static void Main(string[] args)
         {
             // start game
