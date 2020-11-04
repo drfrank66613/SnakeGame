@@ -174,7 +174,7 @@ namespace SnakeGame
                         obstaclesPos.Add(newObstacle);
                     }
                     // Checking whether the determiner's value is still more than 5 thus reduce it by 1
-                    else if (limitCounterDeterminer > 5)
+                    if (limitCounterDeterminer > 5)
                     {
                         limitCounterDeterminer--;
                     }
