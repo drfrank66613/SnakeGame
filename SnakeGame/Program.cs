@@ -18,20 +18,26 @@ namespace SnakeGame
         static void PrintHelp()
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("=====HELP PAGE=======\n");
 
             Console.OutputEncoding = System.Text.Encoding.Unicode;
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("HOW TO PLAY");
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("1. Move up   \t: \u2191");
             Console.WriteLine("2. Move right\t: \u2192");
             Console.WriteLine("2. Move down\t: \u2193");
             Console.WriteLine("2. Move left\t: \u2190");
 
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("\nGAME RULES");
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("1. The snake has lives if it hits one of the obstacles then decrease the snake's lives by 1");
             Console.WriteLine("2. Every time the snake eat the food, the score will increase by 10");
             Console.WriteLine("3. Game over if the snake's lives are 0");
             Console.WriteLine("4. As the score increases, The difficulty level increased as well");
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.Write("\nBack to Main Menu? (enter 'Y' to proceed): ");
             
             bool isActive = true;
@@ -61,8 +67,11 @@ namespace SnakeGame
             string path = Directory.GetCurrentDirectory();
 
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine("====Scoreboard====");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("List of Top 5 Players");
+            Console.ForegroundColor = ConsoleColor.Cyan;
             //string file = @"C:\Users\User\Documents\Git Code\SnakeGame\SnakeGame\Scoreboard.txt";
             string file = path + "\\Scoreboard.txt";
             if (File.Exists(file))
@@ -70,6 +79,7 @@ namespace SnakeGame
                 string str = File.ReadAllText(file);
                 Console.WriteLine(str);
             }
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.Write("\nBack to Main Menu? (enter 'Y' to proceed): ");
             
             bool isActive = true;
@@ -158,12 +168,18 @@ namespace SnakeGame
         static void MainMenu()
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("===Welcome to The Snake Game===");
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("1. Start");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine("2. Scoreboard");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("3. Help");
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("4. Exit");
             Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.Write("Select your option (input 1,2,3 or 4): ");           
             bool isActive = true;
             while (isActive)
