@@ -12,6 +12,8 @@ namespace SnakeGame
 {
     class Program
     {
+
+        
         // This method is for printing the help page
         static void PrintHelp()
         {
@@ -56,10 +58,13 @@ namespace SnakeGame
         // print the scoreboard to the console
         static void PrintScoreboard()
         {
+            string path = Directory.GetCurrentDirectory();
+
             Console.Clear();
             Console.WriteLine("====Scoreboard====");
             Console.WriteLine("List of Top 5 Players");
-            string file = @"C:\Users\User\Documents\Git Code\SnakeGame\SnakeGame\Scoreboard.txt";
+            //string file = @"C:\Users\User\Documents\Git Code\SnakeGame\SnakeGame\Scoreboard.txt";
+            string file = path + "\\Scoreboard.txt";
             if (File.Exists(file))
             {
                 string str = File.ReadAllText(file);
@@ -92,7 +97,9 @@ namespace SnakeGame
         // add new score to the scoreboard if the player beats one of the top 5 players who has the lowest score
         static void AddNewScore(int newScore)
         {
-            string scoreDataFile = @"C:\Users\User\Documents\Git Code\SnakeGame\SnakeGame\ScoreData.txt"; // open the ScoreData file
+            string path = Directory.GetCurrentDirectory();
+            //string scoreDataFile = @"C:\Users\User\Documents\Git Code\SnakeGame\SnakeGame\ScoreData.txt"; // open the ScoreData file
+            string scoreDataFile = path + "\\ScoreData.txt";
 
             List<string> lines = File.ReadAllLines(scoreDataFile).ToList(); // read the data line by line and store to it into the list
 
@@ -108,7 +115,7 @@ namespace SnakeGame
             }
 
 
-            string scoreboardFile = @"C:\Users\User\Documents\Git Code\SnakeGame\SnakeGame\Scoreboard.txt"; // open the Scoreboard file
+            string scoreboardFile = path + "\\Scoreboard.txt"; // open the Scoreboard file
 
             // store the list of the top 5 players (the names & scores) which will be used to fill the Scoreboard file
             string[] textLines = { names[0] + " = " + scores[0],
