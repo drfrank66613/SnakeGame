@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
@@ -29,13 +30,175 @@ namespace SnakeGame
             Console.WriteLine("2. Every time the snake eat the food, the score will increase by 10");
             Console.WriteLine("3. Game over if the snake's lives are 0");
             Console.WriteLine("4. As the score increases, The difficulty level increased as well");
+            Console.Write("\nBack to Main Menu? (enter 'Y' to proceed): ");
+            
+            bool isActive = true;
+            while (isActive)
+            {
+                string input = Console.ReadLine();
+                switch (input)
+                {
+                    case "Y":
+                    case "y":
+                        isActive = false;
+                        MainMenu();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid Input!");
+                        Thread.Sleep(500);
+                        isActive = false;
+                        PrintHelp();
+                        break;
+                }
+            }
+        }
+
+        // print the scoreboard to the console
+        static void PrintScoreboard()
+        {
+            Console.Clear();
+            Console.WriteLine("====Scoreboard====");
+            Console.WriteLine("List of Top 5 Players");
+            string file = @"C:\Users\User\Documents\Git Code\SnakeGame\SnakeGame\Scoreboard.txt";
+            if (File.Exists(file))
+            {
+                string str = File.ReadAllText(file);
+                Console.WriteLine(str);
+            }
+            Console.Write("\nBack to Main Menu? (enter 'Y' to proceed): ");
+            
+            bool isActive = true;
+            while (isActive)
+            {
+                string input = Console.ReadLine();
+                switch (input)
+                {
+                    case "Y":
+                    case "y":
+                        isActive = false;
+                        MainMenu();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid Input!");
+                        Thread.Sleep(500);
+                        isActive = false;
+                        PrintScoreboard();
+                        
+                        break;
+                }
+            }
+        }
+
+        // add new score to the scoreboard if the player beats one of the top 5 players who has the lowest score
+        static void AddNewScore(int newScore)
+        {
+            string scoreDataFile = @"C:\Users\User\Documents\Git Code\SnakeGame\SnakeGame\ScoreData.txt"; // open the ScoreData file
+
+            List<string> lines = File.ReadAllLines(scoreDataFile).ToList(); // read the data line by line and store to it into the list
+
+            List<string> names = new List<string>(); // new list to store names of the top 5 players
+            List<int> scores = new List<int>(); // new list to store scores of the top 5 players
+
+            // go through the lines list line by line and store the name & score at each line to the names & scores lists
+            foreach (string line in lines)
+            {
+                var tmp = line.Split(',');
+                names.Add(tmp[0]);
+                scores.Add(Convert.ToInt32(tmp[1]));
+            }
+
+
+            string scoreboardFile = @"C:\Users\User\Documents\Git Code\SnakeGame\SnakeGame\Scoreboard.txt"; // open the Scoreboard file
+
+            // store the list of the top 5 players (the names & scores) which will be used to fill the Scoreboard file
+            string[] textLines = { names[0] + " = " + scores[0],
+                                   names[1] + " = " + scores[1],
+                                   names[2] + " = " + scores[2],
+                                   names[3] + " = " + scores[3],
+                                   names[4] + " = " + scores[4]};
+
+            // check if the score of current player beats one of the top 5 players
+            if (scores.Min() < newScore)
+            {
+                Console.Write("You reaches the top 5 highscores! Please enter your name: ");
+                string name = Console.ReadLine();
+
+                // go through the scores of the top players to find the score which will be changed
+                for (int i = 0; i < scores.Count; i++)
+                {
+                    // if the score is already found, the name & score of the previous player will be changed with the new ones 
+                    // and the Scoreboard & ScoreData files will be updated as well
+                    if (scores.Min() == scores[i])
+                    {
+                        names[i] = name;
+                        scores[i] = newScore;
+                        textLines[i] = name + " = " + newScore;
+                        lines[i] = name + ',' + Convert.ToString(newScore);
+                        break;
+                    }
+                }
+
+                Console.Clear();
+                Console.Write("Congrats! You have been added into the top 5 players list. You can check it on the Scoreboard menu");
+
+                File.WriteAllLines(scoreDataFile, lines); // update the ScoreData file
+                File.WriteAllLines(scoreboardFile, textLines); // update the Scoreboard file
+            }
+
+        }
+
+        // Control the option selected by the user to preceed the game
+        static void MainMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("===Welcome to The Snake Game===");
+            Console.WriteLine("1. Start");
+            Console.WriteLine("2. Scoreboard");
+            Console.WriteLine("3. Help");
+            Console.WriteLine("4. Exit");
+            Console.WriteLine();
+            Console.Write("Select your option (input 1,2,3 or 4): ");           
+            bool isActive = true;
+            while (isActive)
+            {
+                string input = Console.ReadLine();
+                switch (input)
+                {
+                    // play the game
+                    case "1":
+                        isActive = false;
+                        break;
+                    // see the scoreboard
+                    case "2":
+                        isActive = false;
+                        PrintScoreboard();
+                        break;
+                    // see the help page
+                    case "3":
+                        isActive = false;
+                        PrintHelp();
+                        break;
+                    // exit the game
+                    case "4":
+                        Environment.Exit(0);
+                        break;
+                    // wrong option selected
+                    default:
+                        Console.WriteLine("Invalid input!");
+                        Thread.Sleep(500);
+                        isActive = false;
+                        MainMenu();
+                        break;
+                }
+                
+            }
+
         }
 
         static void Main(string[] args)
         {
-            // start game
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
+            // run the program, proceed to the Main Menu
+            MainMenu();
 
             // display this char on the console during the game
             char ch = '*';
@@ -491,6 +654,8 @@ namespace SnakeGame
             } while (gameLive);
 
             Console.Clear(); // Clear the screen
+
+            AddNewScore(currentScore); // Add new highscore to the Scoreboard
             Console.ForegroundColor = ConsoleColor.Red;
 
             // Write "Game Over" to the screen with red color
