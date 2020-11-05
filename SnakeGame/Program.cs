@@ -202,7 +202,7 @@ namespace SnakeGame
 
             // display this char on the console during the game
             char ch = '*';
-
+            int snakeLives = 3; //Snake's Lives
             int snekLength = 3; //Initial Snake Length
             bool gameLive = true; // As long as the value of this variable is true then the game will keep running 
             ConsoleKeyInfo consoleKey; // holds whatever key is pressed
@@ -214,7 +214,7 @@ namespace SnakeGame
             int consoleHeightLimit = Console.WindowHeight; // 30
 
             // clear to color
-            Console.BackgroundColor = ConsoleColor.DarkGray;
+            Console.BackgroundColor = ConsoleColor.Black;
             Console.Clear();
 
             // delay to slow down the character movement so you can see it
@@ -254,7 +254,7 @@ namespace SnakeGame
 
             int maxObstaclesNumber = 4;
 
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Red;// Obstacle spawn color
 
             // Adding the first obstacle to the game
             List<int> firstObstacle = new List<int>();
@@ -271,13 +271,13 @@ namespace SnakeGame
                
             
 
-            //Generates food on random location
+            // Generates food on random location
             int foodX = rnd.Next(5/2, (consoleWidthLimit - 5)/2)*2;
             int foodY = rnd.Next(5/2, (consoleHeightLimit - 1)/2)*2;
-
+            Console.ForegroundColor = ConsoleColor.DarkYellow; // Food Color spawn/after eat
             Console.SetCursorPosition(foodX, foodY);
             
-            //Checks if food location overlaps with obstacle
+            // Checks if food location overlaps with obstacle
             for (int i = 0; i < obstaclesPos.Count; i++)
             {
                 if ( (foodX == obstaclesPos[i][0]) && (foodY == obstaclesPos[i][1]))
@@ -289,7 +289,8 @@ namespace SnakeGame
             }
             Console.Write(food);
 
-            
+            // Ensures Unicode Characters can be printed properly
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
             // The direction of the snake movement
             string direction = "right"; // "right" here means the initial direction is to the right
              do // until escape
@@ -297,13 +298,44 @@ namespace SnakeGame
                 // print directions at top, then restore position
                 // save then restore current color
                 ConsoleColor cc = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.DarkYellow;// Instructions Color
                 Console.SetCursorPosition(0, 0);
                 Console.Write("Arrows move up/down/right/left. Press 'esc' quit.");
-                Console.WriteLine("                                     Score : " + currentScore);
-                if(timeLimitShown < 10)
+                Console.ForegroundColor = ConsoleColor.Red; // Life Color
+
+                //Checks for remaining Snake Lives and prints remaining lives into heart shapes
+                if (snakeLives == 3)
                 {
-                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(60, 0);
+                    Console.Write("Lives: \u2665 \u2665 \u2665");
+                }
+                else if (snakeLives == 2)
+                {
+                    Console.SetCursorPosition(60, 0);
+                    Console.Write("                    ");// Clears area for new changes to snake Lives
+
+                    Console.SetCursorPosition(60, 0);
+                    Console.Write("Lives: \u2665 \u2665");
+                }
+                else if (snakeLives == 1)
+                {
+                    Console.SetCursorPosition(60, 0);
+                    Console.Write("                    ");// Clears area for new changes to snake Lives
+
+                    Console.SetCursorPosition(60, 0);
+                    Console.Write("Lives: \u2665");
+                }
+                Console.ForegroundColor = ConsoleColor.Green; // Score Color
+                Console.SetCursorPosition(90, 0);
+                Console.Write("Score : " + currentScore);
+
+                Console.SetCursorPosition(0, 1);
+                Console.ForegroundColor = ConsoleColor.Cyan; // Time Limit Color
+                if (timeLimitShown < 10)
+                {
+                    Console.SetCursorPosition(0, 1);
+                    Console.Write("                    ");
+
                     Console.SetCursorPosition(0, 1);
                     Console.WriteLine("Food Time Limit: " + timeLimitShown.ToString().Trim());
                 }
@@ -329,7 +361,7 @@ namespace SnakeGame
                         newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
                         newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
 
-                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColor.Red;// Obstacle color 
                         Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
                         Console.Write(obstacle);
 
@@ -348,7 +380,7 @@ namespace SnakeGame
                 // find the current position in the console grid & erase the character there if don't want to see the trail
                 if (trail == false)
                 {
-                    for (int i = 0; i < snekLength; i++)    //Removes trail for each increased snake length
+                    for (int i = 0; i < snekLength; i++)    // Removes trail for each increased snake length
                     {
                         // Remove every snake body trail according to the snake direction 
                         if (direction == "up")
@@ -408,25 +440,21 @@ namespace SnakeGame
                         case ConsoleKey.UpArrow: //UP
                             dx = 0;
                             dy = -1;
-                            Console.ForegroundColor = ConsoleColor.DarkBlue;
                             direction = "up"; 
                             break;
                         case ConsoleKey.DownArrow: // DOWN
                             dx = 0;
                             dy = 1;
-                            Console.ForegroundColor = ConsoleColor.Cyan;
                             direction = "down"; 
                             break;
                         case ConsoleKey.LeftArrow: //LEFT
                             dx = -2; // Changed to -2 so that the snake movement speed looks similar when moving vertically and horizontally
                             dy = 0;
-                            Console.ForegroundColor = ConsoleColor.Green;
                             direction = "left";
                             break;
                         case ConsoleKey.RightArrow: //RIGHT
                             dx = 2; // Changed to 2 so that the snake movement speed looks similar when moving vertically and horizontally
                             dy = 0;
-                            Console.ForegroundColor = ConsoleColor.Black;
                             direction = "right";
                             break;
                         case ConsoleKey.Escape: //END
@@ -479,9 +507,10 @@ namespace SnakeGame
 
                 // write the character in the new position
                 // Console.SetCursorPosition(x, y);
-
+                
                 for (int i = 0; i < snekLength; i++)
                 {
+                    Console.ForegroundColor = ConsoleColor.Cyan; //Snake Color
                     // Printing the snake body according to the direction of the snake movement
                     if (direction == "up")
                     {
@@ -540,6 +569,7 @@ namespace SnakeGame
                 }
 
                 // Change the food location if timeLimitShown is less than 0 and return timeLimitShown & timeLimitCounter value back to initial value
+                Console.ForegroundColor = ConsoleColor.DarkYellow; //Food Color after timer ends
                 if (timeLimitShown < 0)
                 {
                     timeLimitShown = 10;
@@ -550,11 +580,12 @@ namespace SnakeGame
 
                     foodX = rnd.Next(5 / 2, (consoleWidthLimit - 5) / 2) * 2;
                     foodY = rnd.Next(5 / 2, (consoleHeightLimit - 1) / 2) * 2;
-
+                    
                     Console.SetCursorPosition(foodX, foodY);
 
                     for (int i = 0; i < obstaclesPos.Count; i++)
                     {
+                        
                         if ((foodX == obstaclesPos[i][0]) && (foodY == obstaclesPos[i][1]))
                         {
                             foodX = rnd.Next(5 / 2, (consoleWidthLimit - 5) / 2) * 2;
@@ -562,6 +593,7 @@ namespace SnakeGame
                             Console.SetCursorPosition(foodX, foodY);
                         }
                     }
+                    
                     Console.Write(food);
                 }
 
@@ -610,7 +642,30 @@ namespace SnakeGame
                             // for going up direction
                             if (x == obstaclesPos[i][0] && (y + j) == obstaclesPos[i][1])
                             {
-                                gameLive = false;
+                                snakeLives--;
+
+                                // If the snakeLives is equal to 0 then end the game
+                                if (snakeLives == 0)
+                                {
+                                    gameLive = false;
+                                }
+                                else
+                                {
+                                    // Delete the collided obstacle at the current x and y position
+                                    obstaclesPos.RemoveAt(i);
+
+                                    // Create a new obstacle to replace the collided obstacle 
+                                    List<int> newObstacle = new List<int>();
+                                    newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
+                                    newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
+
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
+                                    Console.Write(obstacle);
+
+                                    // Add it to the 2D list
+                                    obstaclesPos.Add(newObstacle);
+                                }
                                 break;
                             }
                         }
@@ -620,7 +675,30 @@ namespace SnakeGame
                             // for going right direction
                             if ((x - j) == obstaclesPos[i][0] && y == obstaclesPos[i][1])
                             {
-                                gameLive = false;
+                                snakeLives--;
+
+                                // If the snakeLives is equal to 0 then end the game
+                                if (snakeLives == 0)
+                                {
+                                    gameLive = false;
+                                }
+                                else
+                                {
+                                    // Delete the collided obstacle at the current x and y position
+                                    obstaclesPos.RemoveAt(i);
+
+                                    // Create a new obstacle to replace the collided obstacle 
+                                    List<int> newObstacle = new List<int>();
+                                    newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
+                                    newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
+
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
+                                    Console.Write(obstacle);
+
+                                    // Add it to the 2D list
+                                    obstaclesPos.Add(newObstacle);
+                                }
                                 break;
                             }
                         }
@@ -630,8 +708,32 @@ namespace SnakeGame
                             // for going down direction
                             if (x == obstaclesPos[i][0] && (y - j) == obstaclesPos[i][1])
                             {
-                                gameLive = false;
+                                snakeLives--;
+
+                                // If the snakeLives is equal to 0 then end the game
+                                if (snakeLives == 0)
+                                {
+                                    gameLive = false;
+                                }
+                                else
+                                {
+                                    // Delete the collided obstacle at the current x and y position
+                                    obstaclesPos.RemoveAt(i);
+
+                                    // Create a new obstacle to replace the collided obstacle 
+                                    List<int> newObstacle = new List<int>();
+                                    newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
+                                    newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
+
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
+                                    Console.Write(obstacle);
+
+                                    // Add it to the 2D list
+                                    obstaclesPos.Add(newObstacle);
+                                }
                                 break;
+
                             }
                         }
                         else if (direction == "left")
@@ -640,7 +742,30 @@ namespace SnakeGame
                             // for going left direction
                             if ((x + j) == obstaclesPos[i][0] && y == obstaclesPos[i][1])
                             {
-                                gameLive = false;
+                                snakeLives--;
+
+                                // If the snakeLives is equal to 0 then end the game
+                                if (snakeLives == 0)
+                                {
+                                    gameLive = false;
+                                }
+                                else
+                                {
+                                    // Delete the collided obstacle at the current x and y position
+                                    obstaclesPos.RemoveAt(i);
+
+                                    // Create a new obstacle to replace the collided obstacle 
+                                    List<int> newObstacle = new List<int>();
+                                    newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
+                                    newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
+
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
+                                    Console.Write(obstacle);
+
+                                    // Add it to the 2D list
+                                    obstaclesPos.Add(newObstacle);
+                                }
                                 break;
                             }
                         }
