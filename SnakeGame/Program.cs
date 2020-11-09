@@ -327,27 +327,28 @@ namespace SnakeGame
                 Console.ForegroundColor = ConsoleColor.Red; // Life Color
 
                 //Checks for remaining Snake Lives and prints remaining lives into heart shapes
-                if (snakeLives == 3)
+                switch (snakeLives)
                 {
-                    Console.SetCursorPosition(60, 0);
-                    Console.Write("Lives: \u2665 \u2665 \u2665");
-                }
-                else if (snakeLives == 2)
-                {
-                    Console.SetCursorPosition(60, 0);
-                    Console.Write("                    ");// Clears area for new changes to snake Lives
+                    case 3:
+                        Console.SetCursorPosition(60, 0);
+                        Console.Write("Lives: \u2665 \u2665 \u2665");
+                        break;
+                    case 2:
+                        Console.SetCursorPosition(60, 0);
+                        Console.Write("                    ");// Clears area for new changes to snake Lives
 
-                    Console.SetCursorPosition(60, 0);
-                    Console.Write("Lives: \u2665 \u2665");
-                }
-                else if (snakeLives == 1)
-                {
-                    Console.SetCursorPosition(60, 0);
-                    Console.Write("                    ");// Clears area for new changes to snake Lives
+                        Console.SetCursorPosition(60, 0);
+                        Console.Write("Lives: \u2665 \u2665");
+                        break;
+                    case 1:
+                        Console.SetCursorPosition(60, 0);
+                        Console.Write("                    ");// Clears area for new changes to snake Lives
 
-                    Console.SetCursorPosition(60, 0);
-                    Console.Write("Lives: \u2665");
+                        Console.SetCursorPosition(60, 0);
+                        Console.Write("Lives: \u2665");
+                        break;
                 }
+                
                 Console.ForegroundColor = ConsoleColor.Green; // Score Color
                 Console.SetCursorPosition(90, 0);
                 Console.Write("Score : " + currentScore);
@@ -406,49 +407,48 @@ namespace SnakeGame
                     for (int i = 0; i < snekLength; i++)    // Removes trail for each increased snake length
                     {
                         // Remove every snake body trail according to the snake direction 
-                        if (direction == "up")
+                        switch (direction)
                         {
-                            // Checking to make sure if y + i is not more than the console height limit before clearing the trail
-                            // Hence not triggering the ArgumentOutOfRangeException
-                            if ((y + i) < consoleHeightLimit)
-                            {
-                                // clearing the snake body trail when it's going up
-                                Console.SetCursorPosition(x, y + i); 
-                                Console.Write(' ');
-                            }
-                        }
-                        else if (direction == "right")
-                        {
-                            // Checking to make sure if x - i is not less than 0 before clearing the trail
-                            // Hence not triggering the ArgumentOutOfRangeException
-                            if ((x - i) > 0)
-                            {
-                                // clearing the snake body trail when it's going right
-                                Console.SetCursorPosition(x - i, y); 
-                                Console.Write(' ');
-                            }
-                        }
-                        else if (direction == "down")
-                        {
-                            // Checking to make sure if y - i is not less than 0 before clearing the trail
-                            // Hence not triggering the ArgumentOutOfRangeException
-                            if ((y - i) > 0)
-                            {
-                                // clearing the snake body trail when it's going down
-                                Console.SetCursorPosition(x, y - i); 
-                                Console.Write(' ');
-                            }
-                        }
-                        else if (direction == "left")
-                        {
-                            // Checking to make sure if x + i is not more than the console width limit before clearing the trail
-                            // Hence not triggering the ArgumentOutOfRangeException
-                            if ((x + i) < consoleWidthLimit)
-                            {
-                                // clearing the snake body trail when it's going left
-                                Console.SetCursorPosition(x + i, y);
-                                Console.Write(' ');
-                            }
+                            case "up":
+                                // Checking to make sure if y + i is not more than the console height limit before clearing the trail
+                                // Hence not triggering the ArgumentOutOfRangeException
+                                if ((y + i) < consoleHeightLimit)
+                                {
+                                    // clearing the snake body trail when it's going up
+                                    Console.SetCursorPosition(x, y + i);
+                                    Console.Write(' ');
+                                }
+                                break;
+                            case "right":
+                                // Checking to make sure if x - i is not less than 0 before clearing the trail
+                                // Hence not triggering the ArgumentOutOfRangeException
+                                if ((x - i) > 0)
+                                {
+                                    // clearing the snake body trail when it's going right
+                                    Console.SetCursorPosition(x - i, y);
+                                    Console.Write(' ');
+                                }
+                                break;
+                            case "down":
+                                // Checking to make sure if y - i is not less than 0 before clearing the trail
+                                // Hence not triggering the ArgumentOutOfRangeException
+                                if ((y - i) > 0)
+                                {
+                                    // clearing the snake body trail when it's going down
+                                    Console.SetCursorPosition(x, y - i);
+                                    Console.Write(' ');
+                                }
+                                break;
+                            case "left":
+                                // Checking to make sure if x + i is not more than the console width limit before clearing the trail
+                                // Hence not triggering the ArgumentOutOfRangeException
+                                if ((x + i) < consoleWidthLimit)
+                                {
+                                    // clearing the snake body trail when it's going left
+                                    Console.SetCursorPosition(x + i, y);
+                                    Console.Write(' ');
+                                }
+                                break;
                         }
                     }
                 }
@@ -535,50 +535,52 @@ namespace SnakeGame
                 {
                     Console.ForegroundColor = ConsoleColor.Cyan; //Snake Color
                     // Printing the snake body according to the direction of the snake movement
-                    if (direction == "up")
+                    switch (direction)
                     {
-                        // Checking to make sure if y + i is not more than console height limit before printing the snake's body
-                        // Hence not triggering the ArgumentOutOfRangeException
-                        if ((y + i) < consoleHeightLimit)
-                        {
-                            // Printing the snake body when it's going up
-                            Console.SetCursorPosition(x, y + i);
-                            Console.Write(ch);
-                        }
-                    }
-                    else if (direction == "right")
-                    {
-                        // Checking to make sure if x - i is not less than 0 before printing the snake's body
-                        // Hence not triggering the ArgumentOutOfRangeException
-                        if ((x - i) > 0)
-                        {
-                            // Printing the snake body when it's going right
-                            Console.SetCursorPosition(x - i, y);
-                            Console.Write(ch);
-                        }
-                    }
-                    else if (direction == "down")
-                    {
-                        // Checking to make sure if y - i is not less than 0 before printing the snake's body
-                        // Hence not triggering the ArgumentOutOfRangeException
-                        if ((y - i) > 0)
-                        {
-                            // Printing the snake body when it's going down
-                            Console.SetCursorPosition(x, y - i);
-                            Console.Write(ch);
-                        }
-                    }
-                    else if (direction == "left")
-                    {
-                        // Checking to make sure if x + i is not more than console width limit before printing the snake's body
-                        // Hence not triggering the ArgumentOutOfRangeException
-                        if ((x + i) < consoleWidthLimit)
-                        {
-                            // Printing the snake body when it's going left
-                            Console.SetCursorPosition(x + i, y);
-                            Console.Write(ch);
-                        }
-                    }
+                        case "up":
+                            // Checking to make sure if y + i is not more than console height limit before printing the snake's body
+                            // Hence not triggering the ArgumentOutOfRangeException
+                            if ((y + i) < consoleHeightLimit)
+                            {
+                                // Printing the snake body when it's going up
+                                Console.SetCursorPosition(x, y + i);
+                                Console.Write(ch);
+                            }
+                            break;
+
+                        case "right":
+                            // Checking to make sure if x - i is not less than 0 before printing the snake's body
+                            // Hence not triggering the ArgumentOutOfRangeException
+                            if ((x - i) > 0)
+                            {
+                                // Printing the snake body when it's going right
+                                Console.SetCursorPosition(x - i, y);
+                                Console.Write(ch);
+                            }
+                            break;
+
+                        case "down":
+                            // Checking to make sure if y - i is not less than 0 before printing the snake's body
+                            // Hence not triggering the ArgumentOutOfRangeException
+                            if ((y - i) > 0)
+                            {
+                                // Printing the snake body when it's going down
+                                Console.SetCursorPosition(x, y - i);
+                                Console.Write(ch);
+                            }
+                            break;
+
+                        case "left":
+                            // Checking to make sure if x + i is not more than console width limit before printing the snake's body
+                            // Hence not triggering the ArgumentOutOfRangeException
+                            if ((x + i) < consoleWidthLimit)
+                            {
+                                // Printing the snake body when it's going left
+                                Console.SetCursorPosition(x + i, y);
+                                Console.Write(ch);
+                            }
+                            break;
+                    }                   
                 }
 
                 // The limit counter is decreased by 1 every loop
@@ -659,138 +661,140 @@ namespace SnakeGame
                     // and comparing it with obstacles' x and y position 
                     for (int j = 0; j < snekLength; j++)
                     {
-                        if (direction == "up")
+                        switch (direction)
                         {
-                            // Comparing every part of snake body with the obstacles' x and y position 
-                            // for going up direction
-                            if (x == obstaclesPos[i][0] && (y + j) == obstaclesPos[i][1])
-                            {
-                                snakeLives--;
-
-                                // If the snakeLives is equal to 0 then end the game
-                                if (snakeLives == 0)
+                            case "up":
+                                // Comparing every part of snake body with the obstacles' x and y position 
+                                // for going up direction
+                                if (x == obstaclesPos[i][0] && (y + j) == obstaclesPos[i][1])
                                 {
-                                    gameLive = false;
-                                }
-                                else
-                                {
-                                    // Delete the collided obstacle at the current x and y position
-                                    obstaclesPos.RemoveAt(i);
+                                    snakeLives--;
 
-                                    // Create a new obstacle to replace the collided obstacle 
-                                    List<int> newObstacle = new List<int>();
-                                    newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
-                                    newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
+                                    // If the snakeLives is equal to 0 then end the game
+                                    if (snakeLives == 0)
+                                    {
+                                        gameLive = false;
+                                    }
+                                    else
+                                    {
+                                        // Delete the collided obstacle at the current x and y position
+                                        obstaclesPos.RemoveAt(i);
 
-                                    Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
-                                    Console.Write(obstacle);
+                                        // Create a new obstacle to replace the collided obstacle 
+                                        List<int> newObstacle = new List<int>();
+                                        newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
+                                        newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
 
-                                    // Add it to the 2D list
-                                    obstaclesPos.Add(newObstacle);
-                                }
-                                break;
-                            }
-                        }
-                        else if (direction == "right")
-                        {
-                            // Comparing every part of snake body with the obstacles' x and y position 
-                            // for going right direction
-                            if ((x - j) == obstaclesPos[i][0] && y == obstaclesPos[i][1])
-                            {
-                                snakeLives--;
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
+                                        Console.Write(obstacle);
 
-                                // If the snakeLives is equal to 0 then end the game
-                                if (snakeLives == 0)
-                                {
-                                    gameLive = false;
-                                }
-                                else
-                                {
-                                    // Delete the collided obstacle at the current x and y position
-                                    obstaclesPos.RemoveAt(i);
-
-                                    // Create a new obstacle to replace the collided obstacle 
-                                    List<int> newObstacle = new List<int>();
-                                    newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
-                                    newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
-
-                                    Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
-                                    Console.Write(obstacle);
-
-                                    // Add it to the 2D list
-                                    obstaclesPos.Add(newObstacle);
-                                }
-                                break;
-                            }
-                        }
-                        else if (direction == "down")
-                        {
-                            // Comparing every part of snake body with the obstacles' x and y position 
-                            // for going down direction
-                            if (x == obstaclesPos[i][0] && (y - j) == obstaclesPos[i][1])
-                            {
-                                snakeLives--;
-
-                                // If the snakeLives is equal to 0 then end the game
-                                if (snakeLives == 0)
-                                {
-                                    gameLive = false;
-                                }
-                                else
-                                {
-                                    // Delete the collided obstacle at the current x and y position
-                                    obstaclesPos.RemoveAt(i);
-
-                                    // Create a new obstacle to replace the collided obstacle 
-                                    List<int> newObstacle = new List<int>();
-                                    newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
-                                    newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
-
-                                    Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
-                                    Console.Write(obstacle);
-
-                                    // Add it to the 2D list
-                                    obstaclesPos.Add(newObstacle);
+                                        // Add it to the 2D list
+                                        obstaclesPos.Add(newObstacle);
+                                    }
+                                    break;
                                 }
                                 break;
 
-                            }
-                        }
-                        else if (direction == "left")
-                        {
-                            // Comparing every part of snake body with the obstacles' x and y position 
-                            // for going left direction
-                            if ((x + j) == obstaclesPos[i][0] && y == obstaclesPos[i][1])
-                            {
-                                snakeLives--;
-
-                                // If the snakeLives is equal to 0 then end the game
-                                if (snakeLives == 0)
+                            case "right":
+                                // Comparing every part of snake body with the obstacles' x and y position 
+                                // for going right direction
+                                if ((x - j) == obstaclesPos[i][0] && y == obstaclesPos[i][1])
                                 {
-                                    gameLive = false;
-                                }
-                                else
-                                {
-                                    // Delete the collided obstacle at the current x and y position
-                                    obstaclesPos.RemoveAt(i);
+                                    snakeLives--;
 
-                                    // Create a new obstacle to replace the collided obstacle 
-                                    List<int> newObstacle = new List<int>();
-                                    newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
-                                    newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
+                                    // If the snakeLives is equal to 0 then end the game
+                                    if (snakeLives == 0)
+                                    {
+                                        gameLive = false;
+                                    }
+                                    else
+                                    {
+                                        // Delete the collided obstacle at the current x and y position
+                                        obstaclesPos.RemoveAt(i);
 
-                                    Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
-                                    Console.Write(obstacle);
+                                        // Create a new obstacle to replace the collided obstacle 
+                                        List<int> newObstacle = new List<int>();
+                                        newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
+                                        newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
 
-                                    // Add it to the 2D list
-                                    obstaclesPos.Add(newObstacle);
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
+                                        Console.Write(obstacle);
+
+                                        // Add it to the 2D list
+                                        obstaclesPos.Add(newObstacle);
+                                    }
+                                    break;
                                 }
                                 break;
-                            }
+
+                            case "down":
+                                // Comparing every part of snake body with the obstacles' x and y position 
+                                // for going down direction
+                                if (x == obstaclesPos[i][0] && (y - j) == obstaclesPos[i][1])
+                                {
+                                    snakeLives--;
+
+                                    // If the snakeLives is equal to 0 then end the game
+                                    if (snakeLives == 0)
+                                    {
+                                        gameLive = false;
+                                    }
+                                    else
+                                    {
+                                        // Delete the collided obstacle at the current x and y position
+                                        obstaclesPos.RemoveAt(i);
+
+                                        // Create a new obstacle to replace the collided obstacle 
+                                        List<int> newObstacle = new List<int>();
+                                        newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
+                                        newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
+
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
+                                        Console.Write(obstacle);
+
+                                        // Add it to the 2D list
+                                        obstaclesPos.Add(newObstacle);
+                                    }
+                                    break;
+
+                                }
+                                break;
+
+                            case "left":
+                                // Comparing every part of snake body with the obstacles' x and y position 
+                                // for going left direction
+                                if ((x + j) == obstaclesPos[i][0] && y == obstaclesPos[i][1])
+                                {
+                                    snakeLives--;
+
+                                    // If the snakeLives is equal to 0 then end the game
+                                    if (snakeLives == 0)
+                                    {
+                                        gameLive = false;
+                                    }
+                                    else
+                                    {
+                                        // Delete the collided obstacle at the current x and y position
+                                        obstaclesPos.RemoveAt(i);
+
+                                        // Create a new obstacle to replace the collided obstacle 
+                                        List<int> newObstacle = new List<int>();
+                                        newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
+                                        newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
+
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
+                                        Console.Write(obstacle);
+
+                                        // Add it to the 2D list
+                                        obstaclesPos.Add(newObstacle);
+                                    }
+                                    break;
+                                }
+                                break;
                         }
                     }
                 }
