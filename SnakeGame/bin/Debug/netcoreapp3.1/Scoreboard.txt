@@ -1,5 +1,5 @@
-Player1 = 0
-Player2 = 0
+Bryan = 20
+bryan = 10
 Player3 = 0
 Player4 = 0
 Player5 = 0

@@ -1,5 +1,5 @@
 Bryan,20
-Player2,0
+bryan,10
 Player3,0
 Player4,0
 Player5,0

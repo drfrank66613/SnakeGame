@@ -12,7 +12,33 @@ namespace SnakeGame
 {
     class Program
     {
+        static void PrintScore(int currentScore, int consoleWidthLimit, int consoleHeightLimit)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
 
+            // Write "Game Over" to the screen with red color
+            Console.SetCursorPosition((consoleWidthLimit / 2) - 5, (consoleHeightLimit / 2) - 5);
+            Console.Write("Game Over");
+
+            // Write the score and display to the screen
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition((consoleWidthLimit / 2) - 6, (consoleHeightLimit / 2) - 4);
+            Console.Write("The score: " + currentScore);
+
+            // Write text telling the user to press "ENTER" to exit the program
+            Console.SetCursorPosition((consoleWidthLimit / 2) - 12, (consoleHeightLimit / 2) - 2);
+            Console.Write("Press ENTER key to exit...");
+            Console.ReadKey();
+
+            // Reading user input regarding pressed button
+            ConsoleKeyInfo consoleKey = Console.ReadKey();
+
+            // If it's ENTER key then exit the program 
+            if (consoleKey.Key == ConsoleKey.Enter)
+            {
+                Environment.Exit(0);
+            }
+        }
         
         // This method is for printing the help page
         static void PrintHelp()
@@ -72,7 +98,7 @@ namespace SnakeGame
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("List of Top 5 Players");
             Console.ForegroundColor = ConsoleColor.Cyan;
-            //string file = @"C:\Users\User\Documents\Git Code\SnakeGame\SnakeGame\Scoreboard.txt";
+
             string file = path + "\\Scoreboard.txt";
             if (File.Exists(file))
             {
@@ -107,8 +133,8 @@ namespace SnakeGame
         // add new score to the scoreboard if the player beats one of the top 5 players who has the lowest score
         static void AddNewScore(int newScore)
         {
+            // open the ScoreData file
             string path = Directory.GetCurrentDirectory();
-            //string scoreDataFile = @"C:\Users\User\Documents\Git Code\SnakeGame\SnakeGame\ScoreData.txt"; // open the ScoreData file
             string scoreDataFile = path + "\\ScoreData.txt";
 
             List<string> lines = File.ReadAllLines(scoreDataFile).ToList(); // read the data line by line and store to it into the list
@@ -218,6 +244,35 @@ namespace SnakeGame
 
         }
 
+        /// <summary>
+        /// A function to create a new obstacle
+        /// </summary>
+        /// <param name="listOfObstacles">The 2D list for storing the obstacles' position</param>
+        /// <param name="consoleWidthLimit">The value of console width limit</param>
+        /// <param name="consoleHeightLimit">The value of console height limit</param>
+        static void CreateNewObstacle(List<List<int>> listOfObstacles, int consoleWidthLimit, int consoleHeightLimit)
+        {
+            // The obstacle icon in the game
+            string obstacle = "||";
+
+            // The new obstacle which we are going to create
+            List<int> newObstacle = new List<int>();
+
+            Random rnd = new Random();
+
+            // Generating random even values
+            newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
+            newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
+
+            Console.ForegroundColor = ConsoleColor.Red;// Obstacle spawn color
+
+            Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
+            Console.Write(obstacle);
+
+            // Add it to the 2D list
+            listOfObstacles.Add(newObstacle);
+        }
+
         static void Main(string[] args)
         {
             // run the program, proceed to the Main Menu
@@ -246,9 +301,6 @@ namespace SnakeGame
             // whether to keep trails
             bool trail = false;
 
-            // The obstacle in the game
-            string obstacle = "||";
-
             // The food in the game
             string food = "F";
 
@@ -265,8 +317,6 @@ namespace SnakeGame
             // Generating random number for the amount of obstacles (create a number between 1 and 3)
             Random rnd = new Random();
 
-            
-
 
             // This is a list containing a list hence it is like a 2D dynamic List container
             // This is for storing the x and y position of the obstacles 
@@ -277,22 +327,9 @@ namespace SnakeGame
 
             int maxObstaclesNumber = 4;
 
-            Console.ForegroundColor = ConsoleColor.Red;// Obstacle spawn color
-
             // Adding the first obstacle to the game
-            List<int> firstObstacle = new List<int>();
-
-            // Generating random even values
-            firstObstacle.Add(rnd.Next(5/2, (consoleWidthLimit - 10)/2)*2);
-            firstObstacle.Add(rnd.Next(5/2, (consoleHeightLimit)/2)*2);
-
-            Console.SetCursorPosition(firstObstacle[0], firstObstacle[1]);
-            Console.Write(obstacle);
-
-            // Add it to the 2D list
-            obstaclesPos.Add(firstObstacle);
+            CreateNewObstacle(obstaclesPos, consoleWidthLimit, consoleHeightLimit);
                
-            
 
             // Generates food on random location
             int foodX = rnd.Next(5/2, (consoleWidthLimit - 5)/2)*2;
@@ -381,16 +418,7 @@ namespace SnakeGame
                     if (obstaclesPos.Count < maxObstaclesNumber)
                     {
                         // Create new obstacle
-                        List<int> newObstacle = new List<int>();
-                        newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
-                        newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
-
-                        Console.ForegroundColor = ConsoleColor.Red;// Obstacle color 
-                        Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
-                        Console.Write(obstacle);
-
-                        // Add it to the 2D list
-                        obstaclesPos.Add(newObstacle);
+                        CreateNewObstacle(obstaclesPos, consoleWidthLimit, consoleHeightLimit);
                     }
                     // Checking whether the determiner's value is still more than 5 thus reduce it by 1
                     if (limitCounterDeterminer > 5)
@@ -681,16 +709,7 @@ namespace SnakeGame
                                         obstaclesPos.RemoveAt(i);
 
                                         // Create a new obstacle to replace the collided obstacle 
-                                        List<int> newObstacle = new List<int>();
-                                        newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
-                                        newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
-
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
-                                        Console.Write(obstacle);
-
-                                        // Add it to the 2D list
-                                        obstaclesPos.Add(newObstacle);
+                                        CreateNewObstacle(obstaclesPos, consoleWidthLimit, consoleHeightLimit);
                                     }
                                     break;
                                 }
@@ -714,16 +733,7 @@ namespace SnakeGame
                                         obstaclesPos.RemoveAt(i);
 
                                         // Create a new obstacle to replace the collided obstacle 
-                                        List<int> newObstacle = new List<int>();
-                                        newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
-                                        newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
-
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
-                                        Console.Write(obstacle);
-
-                                        // Add it to the 2D list
-                                        obstaclesPos.Add(newObstacle);
+                                        CreateNewObstacle(obstaclesPos, consoleWidthLimit, consoleHeightLimit);
                                     }
                                     break;
                                 }
@@ -747,16 +757,7 @@ namespace SnakeGame
                                         obstaclesPos.RemoveAt(i);
 
                                         // Create a new obstacle to replace the collided obstacle 
-                                        List<int> newObstacle = new List<int>();
-                                        newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
-                                        newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
-
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
-                                        Console.Write(obstacle);
-
-                                        // Add it to the 2D list
-                                        obstaclesPos.Add(newObstacle);
+                                        CreateNewObstacle(obstaclesPos, consoleWidthLimit, consoleHeightLimit);
                                     }
                                     break;
 
@@ -781,16 +782,7 @@ namespace SnakeGame
                                         obstaclesPos.RemoveAt(i);
 
                                         // Create a new obstacle to replace the collided obstacle 
-                                        List<int> newObstacle = new List<int>();
-                                        newObstacle.Add(rnd.Next(5 / 2, (consoleWidthLimit - 10) / 2) * 2);
-                                        newObstacle.Add(rnd.Next(5 / 2, (consoleHeightLimit) / 2) * 2);
-
-                                        Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.SetCursorPosition(newObstacle[0], newObstacle[1]);
-                                        Console.Write(obstacle);
-
-                                        // Add it to the 2D list
-                                        obstaclesPos.Add(newObstacle);
+                                        CreateNewObstacle(obstaclesPos, consoleWidthLimit, consoleHeightLimit);
                                     }
                                     break;
                                 }
@@ -808,30 +800,9 @@ namespace SnakeGame
             Console.Clear(); // Clear the screen
 
             AddNewScore(currentScore); // Add new highscore to the Scoreboard
-            Console.ForegroundColor = ConsoleColor.Red;
 
-            // Write "Game Over" to the screen with red color
-            Console.SetCursorPosition((consoleWidthLimit / 2) - 5, (consoleHeightLimit / 2) - 5);
-            Console.Write("Game Over");
-
-            // Write the score and display to the screen
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.SetCursorPosition((consoleWidthLimit / 2) - 6, (consoleHeightLimit / 2) - 4);
-            Console.Write("The score: " + currentScore);
-
-            // Write text telling the user to press "ENTER" to exit the program
-            Console.SetCursorPosition((consoleWidthLimit / 2) - 12, (consoleHeightLimit / 2) - 2);
-            Console.Write("Press ENTER key to exit...");
-            Console.ReadKey();
-            
-            // Reading user input regarding button pressed
-            consoleKey = Console.ReadKey();
-
-            // If it's ENTER key then exit the program 
-            if (consoleKey.Key == ConsoleKey.Enter)
-            {
-                Environment.Exit(0);
-            }
+            // Print out the score and Game Over text to the screen
+            PrintScore(currentScore, consoleWidthLimit, consoleHeightLimit);
         }
     }
     
